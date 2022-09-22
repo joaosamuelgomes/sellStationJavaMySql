@@ -11,7 +11,7 @@ public class test {
 
     public static void main(String[] args) {
 
-        ConexaoMySql.getConexaoMySQL();
+        ConexaoMySql.Conectar();
         System.out.println(ConexaoMySql.statusConection());
         ConexaoMySql.FecharConexao();
     }

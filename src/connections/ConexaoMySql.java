@@ -4,22 +4,20 @@ package connections;
  *
  * @author Joao Samuel Gomes
  */
-
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 //Início da classe de conexão//
-
 public class ConexaoMySql {
 
     public static String status = "Não conectou...";
 
     public String pSql = "";
-    
+
     public ResultSet resultSet = null;
 
     public ResultSet getResultSet() {
@@ -30,9 +28,7 @@ public class ConexaoMySql {
         this.resultSet = resultSet;
     }
 
-    
-             
-    public static Connection getConexaoMySQL() {
+    public static Connection Conectar() {
         Connection connection = null;  //atributo do tipo Connection
         try {
             // Carregando o JDBC Driver padrão
@@ -40,8 +36,8 @@ public class ConexaoMySql {
             Class.forName(driverName);
             // Configurando a nossa conexão com um banco de dados//
             String url = "jdbc:mysql://localhost:3306/dbsellstationapp";
-            String username = "root";        
-            String password = "root";      
+            String username = "root";
+            String password = "";
             connection = DriverManager.getConnection(url, username, password);
             //Testa sua conexão//
             if (connection != null) {
@@ -50,12 +46,12 @@ public class ConexaoMySql {
                 status = ("STATUS---> Não foi possivel realizar conexão");
             }
             return connection;
-            } catch (ClassNotFoundException e) {
-                System.out.println("O driver especificado nao foi encontrado.");
-                return null;
-            } catch (SQLException e) {
-                System.out.println("Nao foi possivel conectar ao Banco de Dados.");
-                return null;
+        } catch (ClassNotFoundException e) {
+            System.out.println("O driver especificado nao foi encontrado.");
+            return null;
+        } catch (SQLException e) {
+            System.out.println("Nao foi possivel conectar ao Banco de Dados.");
+            return null;
         }
     }
 
@@ -63,10 +59,11 @@ public class ConexaoMySql {
     public static String statusConection() {
         return status;
     }
+
     //Método que fecha sua conexão//
     public static boolean FecharConexao() {
         try {
-            ConexaoMySql.getConexaoMySQL().close();
+            ConexaoMySql.Conectar().close();
             return true;
 
         } catch (SQLException e) {
@@ -77,62 +74,59 @@ public class ConexaoMySql {
     }
 
     //Método que reinicia sua conexão//
-
     public static java.sql.Connection ReiniciarConexao() {
-         FecharConexao();
-         return ConexaoMySql.getConexaoMySQL();
+        FecharConexao();
+        return ConexaoMySql.Conectar();
 
     }
 
     public boolean executarSql(String pSql) {
-        try{
-            Connection conexao = getConexaoMySQL();
+        try {
+            Connection conexao = Conectar();
             Statement stmt = conexao.createStatement();
-            stmt.executeQuery(pSql);
+            this.setResultSet(stmt.executeQuery(pSql));
         } catch (SQLException ex) {
-             ex.printStackTrace();
-             return false;
+            ex.printStackTrace();
+            return false;
         }
         return true;
-         
-     }
-     
-    public boolean  executarUpdateDelete(String pSql) {
-        try{
-            Connection conexao = getConexaoMySQL();
-            Statement stmt = conexao.createStatement();
-            stmt.executeUpdate(pSql);
+
+    }
+
+    public boolean executarUpdateDelete(String pSql) {
+        try {
+            Connection conexao = Conectar();
+            PreparedStatement ps = conexao.prepareStatement(pSql);
+            ps.setString(1, pSql);
+            ps.executeUpdate();
         } catch (SQLException ex) {
-             ex.printStackTrace();
-             return false;
+            ex.printStackTrace();
+            return false;
         }
         return true;
     }
-     
-    
+
     public int inserirSql(String pSql) {
         int status = 0;
-         try{
-            Connection conexao = getConexaoMySQL();
+        try {
+            Connection conexao = Conectar();
             Statement stmt = conexao.createStatement();
             stmt.executeUpdate(pSql);
             this.setResultSet(stmt.executeQuery("SELECT last_insert_id();"));
-            
-            while(this.resultSet.next()){
+
+            while (this.resultSet.next()) {
                 status = this.resultSet.getInt(1);
             }
             return status;
-         } catch (SQLException ex) {
-             ex.printStackTrace();
-             return status;
-         }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return status;
+        }
     }
-    
-
 
 //Método Construtor da Classe//
     public ConexaoMySql() {
 
     }
-    
+
 }

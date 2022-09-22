@@ -4,17 +4,27 @@
  */
 package view;
 
+import controller.ControllerProdutos;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import model.ModelProdutos;
+
 /**
  *
  * @author joao.samuel
  */
 public class ViewProduto extends javax.swing.JFrame {
+    
+    ArrayList<ModelProdutos> listaModelProdutos = new ArrayList<>();
+    ControllerProdutos controllerProdutos = new ControllerProdutos();
 
     /**
      * Creates new form ViewProduto
      */
     public ViewProduto() {
         initComponents();
+        carregarProdutos();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -52,6 +62,13 @@ public class ViewProduto extends javax.swing.JFrame {
 
         jLabel2.setText("Nome:");
 
+        jtfCodigoProduto.setMinimumSize(new java.awt.Dimension(22, 64));
+        jtfCodigoProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfCodigoProdutoActionPerformed(evt);
+            }
+        });
+
         jLabel3.setText("Estoque:");
 
         jLabel4.setText("Valor:");
@@ -73,7 +90,7 @@ public class ViewProduto extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Código", "Nome", "Quantidade", "Valor"
+                "Código", "Nome", "Valor", "Quantidade"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -111,32 +128,13 @@ public class ViewProduto extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jtfCodigoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtfNomeProduto))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jtfPesquisarProduto)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jbPesquisarProduto))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jtfEstoqueProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jtfValorProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(28, 28, 28)
-                                .addComponent(jLabel2)))
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jbCancelarProduto)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -146,7 +144,22 @@ public class ViewProduto extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jbNovoProduto)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jbSalvarProduto)))
+                        .addComponent(jbSalvarProduto))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jtfEstoqueProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4)
+                            .addComponent(jtfValorProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jtfCodigoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtfNomeProduto)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -203,6 +216,10 @@ public class ViewProduto extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jbPesquisarProdutoActionPerformed
 
+    private void jtfCodigoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfCodigoProdutoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfCodigoProdutoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -236,6 +253,24 @@ public class ViewProduto extends javax.swing.JFrame {
                 new ViewProduto().setVisible(true);
             }
         });
+    }
+    /**
+     * Preenche a tabela de produtos com os produtos do banco de dados
+     */
+    private void carregarProdutos() {
+        listaModelProdutos = controllerProdutos.retornarListaProdutosController();
+        DefaultTableModel modelo = (DefaultTableModel) jtProduto.getModel();
+        modelo.setNumRows(0);
+        //inserindo produtos na tabela
+        int cont =  listaModelProdutos.size();
+        for (int i = 0; i < cont; i++) {
+            modelo.addRow(new Object[]{
+                listaModelProdutos.get(i).getIdProduto(),
+                listaModelProdutos.get(i).getProdutoNome(),
+                listaModelProdutos.get(i).getProdutoValor(),
+                listaModelProdutos.get(i).getProdutoEstoque(),
+            });
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
