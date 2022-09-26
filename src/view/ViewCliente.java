@@ -45,11 +45,13 @@ public class ViewCliente extends javax.swing.JFrame {
         jtfTelefone = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtCliente = new javax.swing.JTable();
-        jbCancelar = new javax.swing.JButton();
-        jbSalvar = new javax.swing.JButton();
-        jbAlterar = new javax.swing.JButton();
+        jbCancelarCliente = new javax.swing.JButton();
+        jbSalvarCliente = new javax.swing.JButton();
+        jbAlterarCliente = new javax.swing.JButton();
+        jbNovoCliente = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Clientes");
 
         jlCodigo.setText("Código:");
 
@@ -125,21 +127,23 @@ public class ViewCliente extends javax.swing.JFrame {
             jtCliente.getColumnModel().getColumn(1).setPreferredWidth(150);
         }
 
-        jbCancelar.setText("Cancelar");
-        jbCancelar.addActionListener(new java.awt.event.ActionListener() {
+        jbCancelarCliente.setText("Cancelar");
+        jbCancelarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbCancelarActionPerformed(evt);
+                jbCancelarClienteActionPerformed(evt);
             }
         });
 
-        jbSalvar.setText("Salvar");
+        jbSalvarCliente.setText("Salvar");
 
-        jbAlterar.setText("Alterar");
-        jbAlterar.addActionListener(new java.awt.event.ActionListener() {
+        jbAlterarCliente.setText("Alterar");
+        jbAlterarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbAlterarActionPerformed(evt);
+                jbAlterarClienteActionPerformed(evt);
             }
         });
+
+        jbNovoCliente.setText("Novo");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -198,11 +202,13 @@ public class ViewCliente extends javax.swing.JFrame {
                                         .addGap(0, 0, Short.MAX_VALUE))
                                     .addComponent(jtfBairro)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jbCancelar)
+                                .addComponent(jbCancelarCliente)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jbNovoCliente)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jbAlterar)
-                                .addGap(112, 112, 112)
-                                .addComponent(jbSalvar)))
+                                .addComponent(jbAlterarCliente)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jbSalvarCliente)))
                         .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
@@ -240,9 +246,10 @@ public class ViewCliente extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbCancelar)
-                    .addComponent(jbSalvar)
-                    .addComponent(jbAlterar))
+                    .addComponent(jbCancelarCliente)
+                    .addComponent(jbSalvarCliente)
+                    .addComponent(jbAlterarCliente)
+                    .addComponent(jbNovoCliente))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
@@ -286,13 +293,13 @@ public class ViewCliente extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfTelefoneActionPerformed
 
-    private void jbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelarActionPerformed
+    private void jbCancelarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelarClienteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jbCancelarActionPerformed
+    }//GEN-LAST:event_jbCancelarClienteActionPerformed
 
-    private void jbAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAlterarActionPerformed
+    private void jbAlterarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAlterarClienteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jbAlterarActionPerformed
+    }//GEN-LAST:event_jbAlterarClienteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -332,9 +339,10 @@ public class ViewCliente extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton jbAlterar;
-    private javax.swing.JButton jbCancelar;
-    private javax.swing.JButton jbSalvar;
+    private javax.swing.JButton jbAlterarCliente;
+    private javax.swing.JButton jbCancelarCliente;
+    private javax.swing.JButton jbNovoCliente;
+    private javax.swing.JButton jbSalvarCliente;
     private javax.swing.JComboBox<String> jcbUf;
     private javax.swing.JLabel jlBairro;
     private javax.swing.JLabel jlCep;
