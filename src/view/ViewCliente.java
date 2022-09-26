@@ -374,9 +374,9 @@ public class ViewCliente extends javax.swing.JFrame {
     private void jbExcluirClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExcluirClienteActionPerformed
         // TODO add your handling code here:
         int linhaSelecionada = this.jtCliente.getSelectedRow();
-        int codigoProdutoSelecionado = (int) jtCliente.getValueAt(linhaSelecionada, 0);
+        int codigoClienteSelecionado = (int) jtCliente.getValueAt(linhaSelecionada, 0);
         
-        if (controllerCliente.excluirClienteController(codigoProdutoSelecionado)) {
+        if (controllerCliente.excluirClienteController(codigoClienteSelecionado)) {
             JOptionPane.showMessageDialog(this, "Cliente excluido com sucesso!");
             this.carregarClientes();
         } else {

@@ -1,21 +1,30 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
+
+import controller.ControllerUsuario;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.ModelUsuario;
 
 /**
  *
  * @author Administrator
  */
 public class ViewUsuario extends javax.swing.JFrame {
+    
+    ControllerUsuario controllerUsuario = new ControllerUsuario();
+    ModelUsuario modelUsuario = new ModelUsuario();
+    ArrayList<ModelUsuario> listaModelUsuarios = new ArrayList<>();
+    String salvarAlterar;
 
     /**
      * Creates new form ViewUsuario
      */
     public ViewUsuario() {
         initComponents();
+        carregarUsuarios();
         setLocationRelativeTo(null);
+        changeHabilitarCampos(false);
     }
 
     /**
@@ -37,7 +46,7 @@ public class ViewUsuario extends javax.swing.JFrame {
         jlLogin = new javax.swing.JLabel();
         jlSenha = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtUsuario = new javax.swing.JTable();
         jbCancelar = new javax.swing.JButton();
         jbExcluir = new javax.swing.JButton();
         jbEditar = new javax.swing.JButton();
@@ -52,16 +61,16 @@ public class ViewUsuario extends javax.swing.JFrame {
 
         jlNome.setText("Nome");
 
+        jtfCodigo.setEditable(false);
+        jtfCodigo.setEnabled(false);
+
         jlLogin.setText("Login");
 
         jlSenha.setText("Senha");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtUsuario.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Código", "Nome", "Login"
@@ -75,22 +84,42 @@ public class ViewUsuario extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setMinWidth(90);
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(90);
-            jTable1.getColumnModel().getColumn(0).setMaxWidth(90);
+        jScrollPane1.setViewportView(jtUsuario);
+        if (jtUsuario.getColumnModel().getColumnCount() > 0) {
+            jtUsuario.getColumnModel().getColumn(0).setMinWidth(90);
+            jtUsuario.getColumnModel().getColumn(0).setPreferredWidth(90);
+            jtUsuario.getColumnModel().getColumn(0).setMaxWidth(90);
         }
 
         jbCancelar.setText("Cancelar");
 
         jbExcluir.setText("Excluir");
+        jbExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbExcluirActionPerformed(evt);
+            }
+        });
 
         jbEditar.setText("Editar");
+        jbEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbEditarActionPerformed(evt);
+            }
+        });
 
         jbNovo.setText("Novo");
+        jbNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbNovoActionPerformed(evt);
+            }
+        });
 
         jbSalvar.setText("Salvar");
+        jbSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbSalvarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -175,6 +204,56 @@ public class ViewUsuario extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jbSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalvarActionPerformed
+        // TODO add your handling code here:
+        
+         if (salvarAlterar.equals("salvar")) {
+            this.salvarUsuario();
+        } else if (salvarAlterar.equals("alterar")) {
+            this.alterarUsuario();
+        }
+    }//GEN-LAST:event_jbSalvarActionPerformed
+
+    private void jbExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExcluirActionPerformed
+        // TODO add your handling code here:
+        int linhaSelecionada = this.jtUsuario.getSelectedRow();
+        int codigoUsuarioSelecionado = (int) jtUsuario.getValueAt(linhaSelecionada, 0);
+        
+        if (controllerUsuario.excluirUsuarioController(codigoUsuarioSelecionado)) {
+            JOptionPane.showMessageDialog(this, "Usuário excluído com sucesso!");
+            this.carregarUsuarios();
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao excluir o usuário.", "ERRO", JOptionPane.ERROR_MESSAGE);
+        };
+    }//GEN-LAST:event_jbExcluirActionPerformed
+
+    private void jbEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEditarActionPerformed
+        // TODO add your handling code here:
+        salvarAlterar = "alterar";
+        this.changeHabilitarCampos(true);
+        int linhaSelecionada = this.jtUsuario.getSelectedRow();
+        try {
+            int codigoUsuarioSelecionado = (int) jtUsuario.getValueAt(linhaSelecionada, 0);
+            //recuperando usuario do banco
+            modelUsuario = controllerUsuario.retornarUsuarioController(codigoUsuarioSelecionado);
+
+            //setar dados na interface
+            this.jtfCodigo.setText(String.valueOf(modelUsuario.getIdUsuario()));
+            this.jtfNome.setText(modelUsuario.getNomeUsuario());
+            this.jtfLogin.setText(modelUsuario.getLoginUsuario());
+            this.jtfSenha.setText(modelUsuario.getSenhaUsuario());
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Código de produto inválido.", "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jbEditarActionPerformed
+
+    private void jbNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNovoActionPerformed
+        // TODO add your handling code here:
+        salvarAlterar = "salvar";
+        changeHabilitarCampos(true);
+    }//GEN-LAST:event_jbNovoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -209,6 +288,24 @@ public class ViewUsuario extends javax.swing.JFrame {
             }
         });
     }
+    
+    /**
+     * Carregar usuários na tabela
+     */
+    private void carregarUsuarios() {
+        listaModelUsuarios = controllerUsuario.retornarListaUsuarioController();
+        DefaultTableModel modelo = (DefaultTableModel) jtUsuario.getModel();
+        modelo.setNumRows(0);
+        //inserindo produtos na tabela
+        int cont = listaModelUsuarios.size();
+        for (int i = 0; i < cont; i++) {
+            modelo.addRow(new Object[]{
+                listaModelUsuarios.get(i).getIdUsuario(),
+                listaModelUsuarios.get(i).getNomeUsuario(),
+                listaModelUsuarios.get(i).getLoginUsuario(),
+            });
+        }
+    }
 
     /**
      * Limpa os campos do formulario os deixando vazios
@@ -227,16 +324,42 @@ public class ViewUsuario extends javax.swing.JFrame {
      * @param condicao
      */
     private void changeHabilitarCampos(boolean condicao) {
-        jtfCodigo.setEnabled(condicao);
         jtfNome.setEnabled(condicao);
         jtfLogin.setEnabled(condicao);
         jtfSenha.setEnabled(condicao);
+    }
+    
+    private void salvarUsuario() {
+        modelUsuario.setNomeUsuario(jtfNome.getText());
+        modelUsuario.setLoginUsuario(jtfLogin.getText());
+        modelUsuario.setSenhaUsuario(jtfSenha.getText());
+        
+        if (controllerUsuario.salvarUsuarioController(modelUsuario) > 0) {
+            JOptionPane.showMessageDialog(this, "Usuario cadastrado com sucesso!");
+            carregarUsuarios();
+            limparCampos();
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao cadastrar usuario.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void alterarUsuario() {
+        modelUsuario.setNomeUsuario(jtfNome.getText());
+        modelUsuario.setLoginUsuario(jtfLogin.getText());
+        modelUsuario.setSenhaUsuario(jtfSenha.getText());
+        
+        if (controllerUsuario.atualizarUsuarioController(modelUsuario)) {
+            JOptionPane.showMessageDialog(this, "Usuario cadastrado com sucesso!");
+            carregarUsuarios();
+            limparCampos();
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao cadastrar usuario.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton jbCancelar;
     private javax.swing.JButton jbEditar;
     private javax.swing.JButton jbExcluir;
@@ -246,6 +369,7 @@ public class ViewUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jlLogin;
     private javax.swing.JLabel jlNome;
     private javax.swing.JLabel jlSenha;
+    private javax.swing.JTable jtUsuario;
     private javax.swing.JTextField jtfCodigo;
     private javax.swing.JTextField jtfLogin;
     private javax.swing.JTextField jtfNome;

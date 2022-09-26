@@ -278,9 +278,7 @@ public class ViewProduto extends javax.swing.JFrame {
             this.salvarProduto();
         } else if (salvarAlterar.equals("alterar")) {
             this.alterarProduto();
-        }
-        
-       
+        }  
     }//GEN-LAST:event_jbSalvarProdutoActionPerformed
 
     private void jbExcluirProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExcluirProdutoActionPerformed
