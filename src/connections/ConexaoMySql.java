@@ -93,19 +93,6 @@ public class ConexaoMySql {
 
     }
 
-    public boolean executarUpdateDelete(String pSql) {
-        try {
-            Connection conexao = Conectar();
-            PreparedStatement ps = conexao.prepareStatement(pSql);
-            ps.setString(1, pSql);
-            ps.executeUpdate();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
     public int inserirSql(String pSql) {
         int status = 0;
         try {
