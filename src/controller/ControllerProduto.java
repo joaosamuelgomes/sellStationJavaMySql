@@ -1,23 +1,23 @@
 package controller;
 
-import DAO.DaoProdutos;
+import DAO.DAOProduto;
 import java.util.ArrayList;
-import model.ModelProdutos;
+import model.ModelProduto;
 
 /**
  *
  * @author Joao Samuel Gomes
  */
-public class ControllerProdutos {
+public class ControllerProduto {
     
-    private DaoProdutos daoProdutos = new DaoProdutos();
+    private DAOProduto daoProdutos = new DAOProduto();
     
     /**
      * controller para salvar produtos
      * @param pModelProdutos
      * @return int
      */
-    public int SalvarProdutosController(ModelProdutos pModelProdutos) {
+    public int salvarProdutosController(ModelProduto pModelProdutos) {
         return this.daoProdutos.salvarProdutosDAO(pModelProdutos);
     }
     
@@ -35,7 +35,7 @@ public class ControllerProdutos {
      * @param pModelProdutos
      * @return boolean
      */
-    public boolean alterarProdutoController(ModelProdutos pModelProdutos){
+    public boolean alterarProdutoController(ModelProduto pModelProdutos){
         return this.daoProdutos.alterarProdutoDAO(pModelProdutos);
     }
     
@@ -44,7 +44,7 @@ public class ControllerProdutos {
      * @param pIdProduto
      * @return ModelProdutos
      */
-    public ModelProdutos retornarProdutoController(int pIdProduto){
+    public ModelProduto retornarProdutoController(int pIdProduto){
         return this.daoProdutos.retornarProdutoDAO(pIdProduto);
     }
     
@@ -52,7 +52,7 @@ public class ControllerProdutos {
      * controller para retornar uma lista de produtos
      * @return lista ModelProdutos
      */
-    public ArrayList<ModelProdutos> retornarListaProdutosController(){
+    public ArrayList<ModelProduto> retornarListaProdutosController(){
         return this.daoProdutos.retornarListaProdutosDAO();
     }
     

@@ -4,7 +4,7 @@ package model;
  *
  * @author Joao Samuel Gomes
  */
-public class ModelProdutos {
+public class ModelProduto {
     
     private int idProduto;
     private String produtoNome;

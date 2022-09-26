@@ -1,13 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
 
-import controller.ControllerProdutos;
+import controller.ControllerProduto;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
-import model.ModelProdutos;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+import model.ModelProduto;
+import util.Formatador;
 
 /**
  *
@@ -15,8 +16,11 @@ import model.ModelProdutos;
  */
 public class ViewProduto extends javax.swing.JFrame {
     
-    ArrayList<ModelProdutos> listaModelProdutos = new ArrayList<>();
-    ControllerProdutos controllerProdutos = new ControllerProdutos();
+    ArrayList<ModelProduto> listaModelProdutos = new ArrayList<>();
+    ControllerProduto controllerProdutos = new ControllerProduto();
+    ModelProduto modelProdutos = new ModelProduto();
+    String salvarAlterar;
+    Formatador formatador = new Formatador();
 
     /**
      * Creates new form ViewProduto
@@ -25,6 +29,7 @@ public class ViewProduto extends javax.swing.JFrame {
         initComponents();
         carregarProdutos();
         setLocationRelativeTo(null);
+        changeHabilitarCampos(false);
     }
 
     /**
@@ -43,25 +48,28 @@ public class ViewProduto extends javax.swing.JFrame {
         jtfNomeProduto = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jtfEstoqueProduto = new javax.swing.JTextField();
-        jtfValorProduto = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jtfPesquisarProduto = new javax.swing.JTextField();
         jbPesquisarProduto = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtProduto = new javax.swing.JTable();
         jbCancelarProduto = new javax.swing.JButton();
-        jbAlterarProduto = new javax.swing.JButton();
+        jbExcluirProduto = new javax.swing.JButton();
         jbEditarProduto = new javax.swing.JButton();
         jbNovoProduto = new javax.swing.JButton();
         jbSalvarProduto = new javax.swing.JButton();
+        jtfEstoqueProduto = new javax.swing.JFormattedTextField();
+        jtfValorProduto = new javax.swing.JFormattedTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Produtos");
 
         jLabel1.setText("Código:");
 
         jLabel2.setText("Nome:");
 
+        jtfCodigoProduto.setEditable(false);
+        jtfCodigoProduto.setEnabled(false);
         jtfCodigoProduto.setMinimumSize(new java.awt.Dimension(22, 64));
         jtfCodigoProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,14 +120,43 @@ public class ViewProduto extends javax.swing.JFrame {
         }
 
         jbCancelarProduto.setText("Cancelar");
+        jbCancelarProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbCancelarProdutoActionPerformed(evt);
+            }
+        });
 
-        jbAlterarProduto.setText("Alterar");
+        jbExcluirProduto.setText("Excluir");
+        jbExcluirProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbExcluirProdutoActionPerformed(evt);
+            }
+        });
 
         jbEditarProduto.setText("Editar");
+        jbEditarProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbEditarProdutoActionPerformed(evt);
+            }
+        });
 
         jbNovoProduto.setText("Novo");
+        jbNovoProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbNovoProdutoActionPerformed(evt);
+            }
+        });
 
         jbSalvarProduto.setText("Salvar");
+        jbSalvarProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbSalvarProdutoActionPerformed(evt);
+            }
+        });
+
+        jtfEstoqueProduto.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+
+        jtfValorProduto.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -138,7 +175,7 @@ public class ViewProduto extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jbCancelarProduto)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jbAlterarProduto)
+                        .addComponent(jbExcluirProduto)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jbEditarProduto)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -148,18 +185,24 @@ public class ViewProduto extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(jtfEstoqueProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4)
-                            .addComponent(jtfValorProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(42, 42, 42)
+                                .addComponent(jLabel2))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(36, 36, 36)
+                                .addComponent(jLabel4)))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jtfCodigoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtfNomeProduto)))
+                        .addComponent(jtfNomeProduto))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jtfEstoqueProduto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtfValorProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(282, 282, 282)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -191,7 +234,7 @@ public class ViewProduto extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbCancelarProduto)
-                    .addComponent(jbAlterarProduto)
+                    .addComponent(jbExcluirProduto)
                     .addComponent(jbEditarProduto)
                     .addComponent(jbNovoProduto)
                     .addComponent(jbSalvarProduto))
@@ -214,11 +257,74 @@ public class ViewProduto extends javax.swing.JFrame {
 
     private void jbPesquisarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbPesquisarProdutoActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel modelo = (DefaultTableModel) this.jtProduto.getModel();
+        final TableRowSorter<TableModel> classificador = new TableRowSorter<>(modelo);
+        this.jtProduto.setRowSorter(classificador);
+        String textoPesquisa = jtfPesquisarProduto.getText();
+        classificador.setRowFilter(RowFilter.regexFilter(textoPesquisa, 1));
     }//GEN-LAST:event_jbPesquisarProdutoActionPerformed
 
     private void jtfCodigoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfCodigoProdutoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfCodigoProdutoActionPerformed
+
+    private void jbSalvarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalvarProdutoActionPerformed
+
+        if(salvarAlterar.equals("salvar")) {
+            this.salvarProduto();
+        } else if (salvarAlterar.equals("alterar")) {
+            this.alterarProduto();
+        }
+        
+       
+    }//GEN-LAST:event_jbSalvarProdutoActionPerformed
+
+    private void jbExcluirProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExcluirProdutoActionPerformed
+        // TODO add your handling code here:
+        int linhaSelecionada = this.jtProduto.getSelectedRow();
+        int codigoProdutoSelecionado = (int) jtProduto.getValueAt(linhaSelecionada, 0);
+        
+        if(controllerProdutos.excluirProdutoController(codigoProdutoSelecionado)) {
+            JOptionPane.showMessageDialog(this, "Produto excluido com sucesso!");
+            this.carregarProdutos();
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao excluir o produto.", "ERRO", JOptionPane.ERROR_MESSAGE);
+        };
+    }//GEN-LAST:event_jbExcluirProdutoActionPerformed
+
+    private void jbNovoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNovoProdutoActionPerformed
+        // TODO add your handling code here:
+        changeHabilitarCampos(true);
+        salvarAlterar = "salvar";
+    }//GEN-LAST:event_jbNovoProdutoActionPerformed
+
+    private void jbCancelarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelarProdutoActionPerformed
+        // TODO add your handling code here:
+        changeHabilitarCampos(false);
+        limparCampos();
+    }//GEN-LAST:event_jbCancelarProdutoActionPerformed
+
+    private void jbEditarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEditarProdutoActionPerformed
+        // TODO add your handling code here:
+        salvarAlterar = "alterar";
+        this.changeHabilitarCampos(true);
+        int linhaSelecionada = this.jtProduto.getSelectedRow();
+        try {
+        int codigoProdutoSelecionado = (int) jtProduto.getValueAt(linhaSelecionada, 0);
+            //recuperando produto do banco
+            modelProdutos = controllerProdutos.retornarProdutoController(codigoProdutoSelecionado);
+            
+            //setar dados na interface
+            this.jtfCodigoProduto.setText(String.valueOf(modelProdutos.getIdProduto()));
+            this.jtfNomeProduto.setText(modelProdutos.getProdutoNome());
+            this.jtfValorProduto.setText(String.valueOf(modelProdutos.getProdutoValor()));
+            this.jtfEstoqueProduto.setText(String.valueOf(modelProdutos.getProdutoEstoque()));
+            
+        } catch (Exception e){
+            JOptionPane.showMessageDialog(this, "Código de produto inválido.", "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_jbEditarProdutoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -255,6 +361,56 @@ public class ViewProduto extends javax.swing.JFrame {
         });
     }
     /**
+     * Modifica a condição de habilitado dos campos do formulario
+     * @param condicao 
+     */
+    private void changeHabilitarCampos(boolean condicao) {
+        jtfNomeProduto.setEnabled(condicao);
+        jtfEstoqueProduto.setEnabled(condicao);
+        jtfValorProduto.setEnabled(condicao);
+    }
+    /**
+     * Limpa os campos do formulario os deixando vazios
+     *
+     */
+    private void limparCampos(){
+        jtfNomeProduto.setText("");
+        jtfEstoqueProduto.setText("");
+        jtfValorProduto.setText("");
+    }
+    
+    private void salvarProduto() {
+        //Salva um produto no banco de dados
+        modelProdutos.setProdutoNome(this.jtfNomeProduto.getText());
+        modelProdutos.setProdutoEstoque(Integer.parseInt(this.jtfEstoqueProduto.getText()));
+        modelProdutos.setProdutoValor(formatador.converteVirgulaParaPontoReturn(this.jtfValorProduto.getText()));
+        if(controllerProdutos.salvarProdutosController(modelProdutos)>0) {
+            JOptionPane.showMessageDialog(this, "Produto cadastrado com sucesso!");
+            this.carregarProdutos();
+            this.limparCampos();
+            this.changeHabilitarCampos(false);
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao cadastrar produto." , "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void alterarProduto() {
+        
+        modelProdutos.setProdutoNome(this.jtfNomeProduto.getText());
+        modelProdutos.setProdutoEstoque(Integer.parseInt(this.jtfEstoqueProduto.getText()));
+        modelProdutos.setProdutoValor(formatador.converteVirgulaParaPontoReturn(this.jtfValorProduto.getText()));
+        if(controllerProdutos.alterarProdutoController(modelProdutos)) {
+            JOptionPane.showMessageDialog(this, "Produto cadastrado com sucesso!");
+            this.carregarProdutos();
+            this.limparCampos();
+            this.changeHabilitarCampos(false);
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao cadastrar produto." , "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }
+    
+    /**
      * Preenche a tabela de produtos com os produtos do banco de dados
      */
     private void carregarProdutos() {
@@ -281,17 +437,17 @@ public class ViewProduto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton jbAlterarProduto;
     private javax.swing.JButton jbCancelarProduto;
     private javax.swing.JButton jbEditarProduto;
+    private javax.swing.JButton jbExcluirProduto;
     private javax.swing.JButton jbNovoProduto;
     private javax.swing.JButton jbPesquisarProduto;
     private javax.swing.JButton jbSalvarProduto;
     private javax.swing.JTable jtProduto;
     private javax.swing.JTextField jtfCodigoProduto;
-    private javax.swing.JTextField jtfEstoqueProduto;
+    private javax.swing.JFormattedTextField jtfEstoqueProduto;
     private javax.swing.JTextField jtfNomeProduto;
     private javax.swing.JTextField jtfPesquisarProduto;
-    private javax.swing.JTextField jtfValorProduto;
+    private javax.swing.JFormattedTextField jtfValorProduto;
     // End of variables declaration//GEN-END:variables
 }
