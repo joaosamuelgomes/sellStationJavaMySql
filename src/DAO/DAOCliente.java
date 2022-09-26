@@ -21,7 +21,6 @@ public class DAOCliente extends ConexaoMySql {
             this.Conectar();
             return this.inserirSql(
                 "INSERT INTO tbl_cliente ("
-                    + "pk_id_cliente,"
                     + "nome_cliente,"
                     + "endereco_cliente,"
                     + "bairro_cliente,"
@@ -30,7 +29,6 @@ public class DAOCliente extends ConexaoMySql {
                     + "cep_cliente,"
                     + "telefone_cliente"
                 + ") VALUES ("
-                    + "'" + pModelCliente.getIdCliente() + "',"
                     + "'" + pModelCliente.getNomeCliente() + "',"
                     + "'" + pModelCliente.getEnderecoCliente() + "',"
                     + "'" + pModelCliente.getBairroCliente() + "',"
@@ -53,11 +51,11 @@ public class DAOCliente extends ConexaoMySql {
     * @param pIdCliente
     * @return ModelCliente
     */
-    public ModelCliente getClienteDAO(int pIdCliente){
+    public ModelCliente retornarClienteDAO(int pIdCliente){
         ModelCliente modelCliente = new ModelCliente();
         try {
             this.Conectar();
-            this.inserirSql(
+            this.executarSql(
                 "SELECT "
                     + "pk_id_cliente,"
                     + "nome_cliente,"
@@ -96,12 +94,12 @@ public class DAOCliente extends ConexaoMySql {
     * recupera uma lista de Cliente
         * @return ArrayList
     */
-    public ArrayList<ModelCliente> getListaClienteDAO(){
+    public ArrayList<ModelCliente> retornarListaClienteDAO(){
         ArrayList<ModelCliente> listamodelCliente = new ArrayList();
         ModelCliente modelCliente = new ModelCliente();
         try {
             this.Conectar();
-            this.inserirSql(
+            this.executarSql(
                 "SELECT "
                     + "pk_id_cliente,"
                     + "nome_cliente,"
@@ -144,18 +142,17 @@ public class DAOCliente extends ConexaoMySql {
     public boolean atualizarClienteDAO(ModelCliente pModelCliente){
         try {
             Connection conexao = Conectar();
-            String sql = "UPDATE tbl_cliente SET pk_id_cliente = ?, nome_cliente = ?, endereco_cliente = ?, bairro_cliente = ?, cidade_cliente = ?,"
-                    + "estado_cliente = ?, cep_cliente = ?, telefone_cliente = ? WHERE pk_id_produto = ?";
+            String sql = "UPDATE tbl_cliente SET nome_cliente = ?, endereco_cliente = ?, bairro_cliente = ?, cidade_cliente = ?,"
+                    + "estado_cliente = ?, cep_cliente = ?, telefone_cliente = ? WHERE pk_id_cliente = ?";
             PreparedStatement ps = conexao.prepareStatement(sql);
-            ps.setInt(1, pModelCliente.getIdCliente());
-            ps.setString(2, pModelCliente.getNomeCliente());
-            ps.setString(3, pModelCliente.getEnderecoCliente());
-            ps.setString(4, pModelCliente.getBairroCliente());
-            ps.setString(5, pModelCliente.getCidadeCliente());
-            ps.setString(6, pModelCliente.getEstadoCliente());
-            ps.setString(7, pModelCliente.getCepCliente());
-            ps.setString(8,pModelCliente.getTelefoneCliente());
-            ps.setInt(9, pModelCliente.getIdCliente());           
+            ps.setString(1, pModelCliente.getNomeCliente());
+            ps.setString(2, pModelCliente.getEnderecoCliente());
+            ps.setString(3, pModelCliente.getBairroCliente());
+            ps.setString(4, pModelCliente.getCidadeCliente());
+            ps.setString(5, pModelCliente.getEstadoCliente());
+            ps.setString(6, pModelCliente.getCepCliente());
+            ps.setString(7,pModelCliente.getTelefoneCliente());
+            ps.setInt(8, pModelCliente.getIdCliente());
             ps.executeUpdate();
             return true;   
         }catch(Exception e){

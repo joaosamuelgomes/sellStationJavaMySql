@@ -179,6 +179,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jtfPesquisarProduto">
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtfPesquisarProdutoKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jbPesquisarProduto">
           <Properties>

@@ -1,6 +1,7 @@
 package view;
 
 import controller.ControllerProduto;
+import static java.awt.event.KeyEvent.VK_ENTER;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -82,6 +83,12 @@ public class ViewProduto extends javax.swing.JFrame {
         jLabel4.setText("Valor:");
 
         jLabel5.setText("Pesquisar:");
+
+        jtfPesquisarProduto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jtfPesquisarProdutoKeyPressed(evt);
+            }
+        });
 
         jbPesquisarProduto.setText("Pesquisar");
         jbPesquisarProduto.addActionListener(new java.awt.event.ActionListener() {
@@ -257,11 +264,8 @@ public class ViewProduto extends javax.swing.JFrame {
 
     private void jbPesquisarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbPesquisarProdutoActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel modelo = (DefaultTableModel) this.jtProduto.getModel();
-        final TableRowSorter<TableModel> classificador = new TableRowSorter<>(modelo);
-        this.jtProduto.setRowSorter(classificador);
-        String textoPesquisa = jtfPesquisarProduto.getText();
-        classificador.setRowFilter(RowFilter.regexFilter(textoPesquisa, 1));
+        this.pesquisarProduto();
+        
     }//GEN-LAST:event_jbPesquisarProdutoActionPerformed
 
     private void jtfCodigoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfCodigoProdutoActionPerformed
@@ -326,6 +330,13 @@ public class ViewProduto extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jbEditarProdutoActionPerformed
 
+    private void jtfPesquisarProdutoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfPesquisarProdutoKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == VK_ENTER) {
+            this.pesquisarProduto();
+        }
+    }//GEN-LAST:event_jtfPesquisarProdutoKeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -374,11 +385,15 @@ public class ViewProduto extends javax.swing.JFrame {
      *
      */
     private void limparCampos(){
+        jtfCodigoProduto.setText("");
         jtfNomeProduto.setText("");
         jtfEstoqueProduto.setText("");
         jtfValorProduto.setText("");
     }
     
+    /**
+     * salva um produto no banco de dados
+     */
     private void salvarProduto() {
         //Salva um produto no banco de dados
         modelProdutos.setProdutoNome(this.jtfNomeProduto.getText());
@@ -393,7 +408,10 @@ public class ViewProduto extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Erro ao cadastrar produto." , "ERRO", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+ 
+    /**
+     * altera um produto já cadastrado previamente
+     */
     private void alterarProduto() {
         
         modelProdutos.setProdutoNome(this.jtfNomeProduto.getText());
@@ -408,6 +426,17 @@ public class ViewProduto extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Erro ao cadastrar produto." , "ERRO", JOptionPane.ERROR_MESSAGE);
         }
         
+    }
+    
+    /**
+     * cria uma pesquisa com base na entrada de dados do usuário
+     */
+    private void pesquisarProduto() {
+        DefaultTableModel modelo = (DefaultTableModel) this.jtProduto.getModel();
+        final TableRowSorter<TableModel> classificador = new TableRowSorter<>(modelo);
+        this.jtProduto.setRowSorter(classificador);
+        String textoPesquisa = jtfPesquisarProduto.getText();
+        classificador.setRowFilter(RowFilter.regexFilter(textoPesquisa, 1));
     }
     
     /**

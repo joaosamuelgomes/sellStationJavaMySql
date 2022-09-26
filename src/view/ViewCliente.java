@@ -1,20 +1,33 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
+
+import controller.ControllerCliente;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+import model.ModelCliente;
 
 /**
  *
  * @author Joao Samuel Gomes
  */
 public class ViewCliente extends javax.swing.JFrame {
+    
+    ControllerCliente controllerCliente = new ControllerCliente();
+    ModelCliente modelCliente = new ModelCliente();
+    ArrayList<ModelCliente> listaModelClientes = new ArrayList<>();
+    String salvarAlterar;
 
     /**
      * Creates new form ViewCliente
      */
     public ViewCliente() {
         initComponents();
+        this.carregarClientes();
+        changeHabilitarCampos(false);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -40,21 +53,24 @@ public class ViewCliente extends javax.swing.JFrame {
         jlCep = new javax.swing.JLabel();
         jtfCidade = new javax.swing.JTextField();
         jcbUf = new javax.swing.JComboBox<>();
-        jtfCep = new javax.swing.JTextField();
         jlTelefone = new javax.swing.JLabel();
-        jtfTelefone = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtCliente = new javax.swing.JTable();
         jbCancelarCliente = new javax.swing.JButton();
         jbSalvarCliente = new javax.swing.JButton();
-        jbAlterarCliente = new javax.swing.JButton();
+        jbEditarCliente = new javax.swing.JButton();
         jbNovoCliente = new javax.swing.JButton();
+        jbExcluirCliente = new javax.swing.JButton();
+        jtfCep = new javax.swing.JFormattedTextField();
+        jtfTelefone = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Clientes");
 
         jlCodigo.setText("Código:");
 
+        jtfCodigo.setEditable(false);
+        jtfCodigo.setEnabled(false);
         jtfCodigo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtfCodigoActionPerformed(evt);
@@ -94,12 +110,6 @@ public class ViewCliente extends javax.swing.JFrame {
 
         jlTelefone.setText("Telefone:");
 
-        jtfTelefone.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtfTelefoneActionPerformed(evt);
-            }
-        });
-
         jtCliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -135,15 +145,44 @@ public class ViewCliente extends javax.swing.JFrame {
         });
 
         jbSalvarCliente.setText("Salvar");
-
-        jbAlterarCliente.setText("Alterar");
-        jbAlterarCliente.addActionListener(new java.awt.event.ActionListener() {
+        jbSalvarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbAlterarClienteActionPerformed(evt);
+                jbSalvarClienteActionPerformed(evt);
+            }
+        });
+
+        jbEditarCliente.setText("Editar");
+        jbEditarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbEditarClienteActionPerformed(evt);
             }
         });
 
         jbNovoCliente.setText("Novo");
+        jbNovoCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbNovoClienteActionPerformed(evt);
+            }
+        });
+
+        jbExcluirCliente.setText("Excluir");
+        jbExcluirCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbExcluirClienteActionPerformed(evt);
+            }
+        });
+
+        try {
+            jtfCep.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####-###")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        try {
+            jtfTelefone.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##)#####-####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -154,15 +193,15 @@ public class ViewCliente extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtfCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jlCodigo))
+                            .addComponent(jlCodigo)
+                            .addComponent(jtfCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jlNome)
                                 .addGap(294, 294, 294))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jtfNome, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                                .addComponent(jtfNome, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
                                 .addContainerGap())))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,15 +218,14 @@ public class ViewCliente extends javax.swing.JFrame {
                                         .addComponent(jlUf)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jtfCep, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jlCep))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jlCep)
-                                        .addGap(74, 74, 74)
                                         .addComponent(jlTelefone)
                                         .addGap(0, 0, Short.MAX_VALUE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jtfCep, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jtfTelefone))))
+                                    .addComponent(jtfTelefone)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -204,10 +242,12 @@ public class ViewCliente extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jbCancelarCliente)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jbExcluirCliente)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jbEditarCliente)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jbNovoCliente)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jbAlterarCliente)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jbSalvarCliente)))
                         .addContainerGap())))
         );
@@ -248,8 +288,9 @@ public class ViewCliente extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbCancelarCliente)
                     .addComponent(jbSalvarCliente)
-                    .addComponent(jbAlterarCliente)
-                    .addComponent(jbNovoCliente))
+                    .addComponent(jbEditarCliente)
+                    .addComponent(jbNovoCliente)
+                    .addComponent(jbExcluirCliente))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
@@ -289,17 +330,149 @@ public class ViewCliente extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jcbUfActionPerformed
 
-    private void jtfTelefoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfTelefoneActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtfTelefoneActionPerformed
-
     private void jbCancelarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelarClienteActionPerformed
         // TODO add your handling code here:
+        changeHabilitarCampos(false);
+        limparCampos();
     }//GEN-LAST:event_jbCancelarClienteActionPerformed
 
-    private void jbAlterarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAlterarClienteActionPerformed
+    private void jbEditarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEditarClienteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jbAlterarClienteActionPerformed
+        salvarAlterar = "alterar";
+        this.changeHabilitarCampos(true);
+        int linhaSelecionada = this.jtCliente.getSelectedRow();
+        try {
+            int codigoProdutoSelecionado = (int) jtCliente.getValueAt(linhaSelecionada, 0);
+            //recuperando cliente do banco
+            modelCliente = controllerCliente.retornarClienteController(codigoProdutoSelecionado);
+
+            //setar dados na interface
+            this.jtfCodigo.setText(String.valueOf(modelCliente.getIdCliente()));
+            this.jtfNome.setText(modelCliente.getNomeCliente());
+            this.jtfEndereco.setText(modelCliente.getEnderecoCliente());
+            this.jtfBairro.setText(modelCliente.getBairroCliente());
+            this.jtfCidade.setText(modelCliente.getCidadeCliente());
+            this.jtfCep.setText(modelCliente.getCepCliente());
+            this.jtfTelefone.setText(modelCliente.getTelefoneCliente());
+            this.jcbUf.setSelectedItem(modelCliente.getEstadoCliente());
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Código de produto inválido.", "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jbEditarClienteActionPerformed
+
+    private void jbSalvarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalvarClienteActionPerformed
+        // TODO add your handling code here:      
+        if (salvarAlterar.equals("salvar")) {
+            this.salvarCliente();
+        } else if (salvarAlterar.equals("alterar")) {
+            this.alterarCliente();
+        }
+
+    }//GEN-LAST:event_jbSalvarClienteActionPerformed
+
+    private void jbExcluirClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExcluirClienteActionPerformed
+        // TODO add your handling code here:
+        int linhaSelecionada = this.jtCliente.getSelectedRow();
+        int codigoProdutoSelecionado = (int) jtCliente.getValueAt(linhaSelecionada, 0);
+        
+        if (controllerCliente.excluirClienteController(codigoProdutoSelecionado)) {
+            JOptionPane.showMessageDialog(this, "Cliente excluido com sucesso!");
+            this.carregarClientes();
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao excluir o cliente.", "ERRO", JOptionPane.ERROR_MESSAGE);
+        };
+    }//GEN-LAST:event_jbExcluirClienteActionPerformed
+
+    private void jbNovoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNovoClienteActionPerformed
+        // TODO add your handling code here:
+        changeHabilitarCampos(true);
+        salvarAlterar = "salvar";
+    }//GEN-LAST:event_jbNovoClienteActionPerformed
+ 
+    /**
+     * Carrega os clientes a partir do banco de dados.
+     */
+    private void carregarClientes() {
+        listaModelClientes = controllerCliente.retornarListaClienteController();
+        DefaultTableModel modelo = (DefaultTableModel) jtCliente.getModel();
+        modelo.setNumRows(0);
+        //inserindo produtos na tabela
+        int cont = listaModelClientes.size();
+        for (int i = 0; i < cont; i++) {
+            modelo.addRow(new Object[]{
+                listaModelClientes.get(i).getIdCliente(),
+                listaModelClientes.get(i).getNomeCliente(),
+                listaModelClientes.get(i).getCidadeCliente(),
+                listaModelClientes.get(i).getTelefoneCliente(),});
+        }
+    }
+    /**
+     * Salva um cliente no banco de dados
+     */
+    private void salvarCliente() {
+        modelCliente.setNomeCliente(this.jtfNome.getText());
+        modelCliente.setEnderecoCliente(this.jtfEndereco.getText());
+        modelCliente.setBairroCliente(this.jtfBairro.getText());
+        modelCliente.setCidadeCliente(this.jtfCidade.getText());
+        modelCliente.setEstadoCliente(this.jcbUf.getSelectedItem().toString());
+        modelCliente.setCepCliente(this.jtfCep.getText());
+        modelCliente.setTelefoneCliente(this.jtfTelefone.getText());
+        
+        if (controllerCliente.salvarClienteController(modelCliente) > 0) {
+            JOptionPane.showMessageDialog(this, "Cliente cadastrado com sucesso!");
+            carregarClientes();
+            limparCampos();
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao cadastrar cliente.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    /**
+     * Altera o cadastro de um cliente no banco de dados
+     */
+    private void alterarCliente() {
+        modelCliente.setNomeCliente(this.jtfNome.getText());
+        modelCliente.setEnderecoCliente(this.jtfEndereco.getText());
+        modelCliente.setBairroCliente(this.jtfBairro.getText());
+        modelCliente.setCidadeCliente(this.jtfCidade.getText());
+        modelCliente.setEstadoCliente(this.jcbUf.getSelectedItem().toString());
+        modelCliente.setCepCliente(this.jtfCep.getText());
+        modelCliente.setTelefoneCliente(this.jtfTelefone.getText());
+        
+        if (controllerCliente.atualizarClienteController(modelCliente)) {
+            JOptionPane.showMessageDialog(this, "Cliente cadastrado com sucesso!");
+            carregarClientes();
+            limparCampos();
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao cadastrar cliente.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    /**
+     * Define se o campo está ou não habilitado através da condição
+     * @param condicao 
+     */
+    private void changeHabilitarCampos(boolean condicao) {
+        jtfNome.setEnabled(condicao);
+        jtfEndereco.setEnabled(condicao);
+        jtfBairro.setEnabled(condicao);
+        jcbUf.setEnabled(condicao);
+        jtfCidade.setEnabled(condicao);
+        jtfCep.setEnabled(condicao);
+        jtfTelefone.setEnabled(condicao);
+    }
+    
+    /**
+     * Limpa os campos do cadastro
+     */
+    private void limparCampos() {
+        jtfCodigo.setText("");
+        jtfNome.setText("");
+        jtfEndereco.setText("");
+        jtfBairro.setText("");
+        jtfCidade.setText("");
+        jtfCep.setText("");
+        jtfTelefone.setText("");
+    }
 
     /**
      * @param args the command line arguments
@@ -339,8 +512,9 @@ public class ViewCliente extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton jbAlterarCliente;
     private javax.swing.JButton jbCancelarCliente;
+    private javax.swing.JButton jbEditarCliente;
+    private javax.swing.JButton jbExcluirCliente;
     private javax.swing.JButton jbNovoCliente;
     private javax.swing.JButton jbSalvarCliente;
     private javax.swing.JComboBox<String> jcbUf;
@@ -354,11 +528,11 @@ public class ViewCliente extends javax.swing.JFrame {
     private javax.swing.JLabel jlUf;
     private javax.swing.JTable jtCliente;
     private javax.swing.JTextField jtfBairro;
-    private javax.swing.JTextField jtfCep;
+    private javax.swing.JFormattedTextField jtfCep;
     private javax.swing.JTextField jtfCidade;
     private javax.swing.JTextField jtfCodigo;
     private javax.swing.JTextField jtfEndereco;
     private javax.swing.JTextField jtfNome;
-    private javax.swing.JTextField jtfTelefone;
+    private javax.swing.JFormattedTextField jtfTelefone;
     // End of variables declaration//GEN-END:variables
 }

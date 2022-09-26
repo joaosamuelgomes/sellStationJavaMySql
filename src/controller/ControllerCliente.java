@@ -26,8 +26,8 @@ public class ControllerCliente {
     * @param pIdCliente
     * @return ModelCliente
     */
-    public ModelCliente getClienteController(int pIdCliente){
-        return this.daoCliente.getClienteDAO(pIdCliente);
+    public ModelCliente retornarClienteController(int pIdCliente){
+        return this.daoCliente.retornarClienteDAO(pIdCliente);
     }
 
     /**
@@ -35,8 +35,8 @@ public class ControllerCliente {
     * @param pIdCliente
     * @return ArrayList
     */
-    public ArrayList<ModelCliente> getListaClienteController(){
-        return this.daoCliente.getListaClienteDAO();
+    public ArrayList<ModelCliente> retornarListaClienteController(){
+        return this.daoCliente.retornarListaClienteDAO();
     }
 
     /**
