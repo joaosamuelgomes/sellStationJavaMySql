@@ -1,18 +1,15 @@
 package view;
 
-import javax.swing.JFrame;
-
 /**
  *
  * @author Joao Samuel Gomes
  */
 public class ViewPrincipal extends javax.swing.JFrame {
-
     /**
      * Creates new form ViewPrincipal
      */
     public ViewPrincipal() {
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setExtendedState(ViewPrincipal.MAXIMIZED_BOTH);
         initComponents();
     }
 
@@ -38,8 +35,7 @@ public class ViewPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sell Station App - ERP de Gestão Comercial");
-        setPreferredSize(new java.awt.Dimension(1280, 720));
-        setResizable(false);
+        setPreferredSize(new java.awt.Dimension(0, 0));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/util/images/logo.png"))); // NOI18N
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -49,14 +45,15 @@ public class ViewPrincipal extends javax.swing.JFrame {
         jpPrincipalLayout.setHorizontalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpPrincipalLayout.createSequentialGroup()
-                .addGap(0, 576, Short.MAX_VALUE)
-                .addComponent(jLabel1))
+                .addContainerGap(579, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jpPrincipalLayout.setVerticalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpPrincipalLayout.createSequentialGroup()
-                .addContainerGap(344, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(351, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 

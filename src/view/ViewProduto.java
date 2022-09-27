@@ -118,12 +118,15 @@ public class ViewProduto extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jtProduto);
         if (jtProduto.getColumnModel().getColumnCount() > 0) {
-            jtProduto.getColumnModel().getColumn(0).setMinWidth(10);
-            jtProduto.getColumnModel().getColumn(0).setPreferredWidth(10);
-            jtProduto.getColumnModel().getColumn(2).setMinWidth(10);
-            jtProduto.getColumnModel().getColumn(2).setPreferredWidth(10);
-            jtProduto.getColumnModel().getColumn(3).setMinWidth(10);
-            jtProduto.getColumnModel().getColumn(3).setPreferredWidth(10);
+            jtProduto.getColumnModel().getColumn(0).setMinWidth(70);
+            jtProduto.getColumnModel().getColumn(0).setPreferredWidth(70);
+            jtProduto.getColumnModel().getColumn(0).setMaxWidth(70);
+            jtProduto.getColumnModel().getColumn(2).setMinWidth(80);
+            jtProduto.getColumnModel().getColumn(2).setPreferredWidth(80);
+            jtProduto.getColumnModel().getColumn(2).setMaxWidth(80);
+            jtProduto.getColumnModel().getColumn(3).setMinWidth(80);
+            jtProduto.getColumnModel().getColumn(3).setPreferredWidth(80);
+            jtProduto.getColumnModel().getColumn(3).setMaxWidth(80);
         }
 
         jbCancelarProduto.setText("Cancelar");
