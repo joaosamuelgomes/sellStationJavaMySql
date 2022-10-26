@@ -84,6 +84,11 @@ public class ViewUsuario extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jtUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtUsuarioMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtUsuario);
         if (jtUsuario.getColumnModel().getColumnCount() > 0) {
             jtUsuario.getColumnModel().getColumn(0).setMinWidth(90);
@@ -253,6 +258,28 @@ public class ViewUsuario extends javax.swing.JFrame {
         salvarAlterar = "salvar";
         changeHabilitarCampos(true);
     }//GEN-LAST:event_jbNovoActionPerformed
+
+    private void jtUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtUsuarioMouseClicked
+        // TODO add your handling code here:
+        
+        int linhaSelecionada = this.jtUsuario.getSelectedRow();
+        try {
+            int codigoUsuarioSelecionado = (int) jtUsuario.getValueAt(linhaSelecionada, 0);
+            //recuperando usuario do banco
+            modelUsuario = controllerUsuario.retornarUsuarioController(codigoUsuarioSelecionado);
+
+            //setar dados na interface
+            this.jtfCodigo.setText(String.valueOf(modelUsuario.getIdUsuario()));
+            this.jtfNome.setText(modelUsuario.getNomeUsuario());
+            this.jtfLogin.setText(modelUsuario.getLoginUsuario());
+            this.jtfSenha.setText("******");
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Código de produto inválido.", "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        this.changeHabilitarCampos(false);
+    }//GEN-LAST:event_jtUsuarioMouseClicked
 
     /**
      * @param args the command line arguments

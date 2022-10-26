@@ -116,6 +116,11 @@ public class ViewProduto extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jtProduto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtProdutoMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtProduto);
         if (jtProduto.getColumnModel().getColumnCount() > 0) {
             jtProduto.getColumnModel().getColumn(0).setMinWidth(70);
@@ -337,6 +342,27 @@ public class ViewProduto extends javax.swing.JFrame {
             this.pesquisarProduto();
         }
     }//GEN-LAST:event_jtfPesquisarProdutoKeyPressed
+
+    private void jtProdutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtProdutoMouseClicked
+        // TODO add your handling code here:
+        int linhaSelecionada = this.jtProduto.getSelectedRow();
+        try {
+        int codigoProdutoSelecionado = (int) jtProduto.getValueAt(linhaSelecionada, 0);
+            //recuperando produto do banco
+            modelProdutos = controllerProdutos.retornarProdutoController(codigoProdutoSelecionado);
+            
+            //setar dados na interface
+            this.jtfCodigoProduto.setText(String.valueOf(modelProdutos.getIdProduto()));
+            this.jtfNomeProduto.setText(modelProdutos.getProdutoNome());
+            this.jtfValorProduto.setText(String.valueOf(modelProdutos.getProdutoValor()));
+            this.jtfEstoqueProduto.setText(String.valueOf(modelProdutos.getProdutoEstoque()));
+            
+        } catch (Exception e){
+            JOptionPane.showMessageDialog(this, "Código de produto inválido.", "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        this.changeHabilitarCampos(false);
+    }//GEN-LAST:event_jtProdutoMouseClicked
 
     /**
      * @param args the command line arguments

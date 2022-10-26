@@ -129,6 +129,11 @@ public class ViewCliente extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jtCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtClienteMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtCliente);
         if (jtCliente.getColumnModel().getColumnCount() > 0) {
             jtCliente.getColumnModel().getColumn(0).setMinWidth(30);
@@ -336,6 +341,8 @@ public class ViewCliente extends javax.swing.JFrame {
         limparCampos();
     }//GEN-LAST:event_jbCancelarClienteActionPerformed
 
+    
+    
     private void jbEditarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEditarClienteActionPerformed
         // TODO add your handling code here:
         salvarAlterar = "alterar";
@@ -389,6 +396,32 @@ public class ViewCliente extends javax.swing.JFrame {
         changeHabilitarCampos(true);
         salvarAlterar = "salvar";
     }//GEN-LAST:event_jbNovoClienteActionPerformed
+
+    private void jtClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtClienteMouseClicked
+        // TODO add your handling code here:
+        int linhaSelecionada = this.jtCliente.getSelectedRow();
+
+        try {
+            int codigoClienteSelecionado = (int) jtCliente.getValueAt(linhaSelecionada, 0);
+            //recuperando cliente do banco
+            modelCliente = controllerCliente.retornarClienteController(codigoClienteSelecionado);
+
+            //setar dados na interface
+            this.jtfCodigo.setText(String.valueOf(modelCliente.getIdCliente()));
+            this.jtfNome.setText(modelCliente.getNomeCliente());
+            this.jtfEndereco.setText(modelCliente.getEnderecoCliente());
+            this.jtfBairro.setText(modelCliente.getBairroCliente());
+            this.jtfCidade.setText(modelCliente.getCidadeCliente());
+            this.jtfCep.setText(modelCliente.getCepCliente());
+            this.jtfTelefone.setText(modelCliente.getTelefoneCliente());
+            this.jcbUf.setSelectedItem(modelCliente.getEstadoCliente());
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Código de produto inválido.", "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        this.changeHabilitarCampos(false);
+    }//GEN-LAST:event_jtClienteMouseClicked
  
     /**
      * Carrega os clientes a partir do banco de dados.

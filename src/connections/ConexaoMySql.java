@@ -5,7 +5,6 @@ package connections;
  * @author Joao Samuel Gomes
  */
 import java.sql.Statement;
-import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -37,7 +36,7 @@ public class ConexaoMySql {
             // Configurando a nossa conexão com um banco de dados//
             String url = "jdbc:mysql://localhost:3306/dbsellstationapp";
             String username = "root";
-            String password = "";
+            String password = "root";
             connection = DriverManager.getConnection(url, username, password);
             //Testa sua conexão//
             if (connection != null) {
