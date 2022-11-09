@@ -96,6 +96,34 @@ public class DAOProduto extends ConexaoMySql {
         }
         return modelProdutos;
     }
+    
+        public ModelProduto retornarProdutoDAO(String pNomeProduto) {
+        ModelProduto modelProdutos = new ModelProduto();
+        try {
+            this.Conectar();
+            this.executarSql("SELECT "
+                    + "pk_id_produto, "
+                    + "nome_produto, "
+                    + "valor_produto, "
+                    + "estoque_produto "
+                    + "FROM tbl_produto WHERE nome_produto = '" + pNomeProduto + "'"
+            );
+            while (this.getResultSet().next()) {
+                modelProdutos.setIdProduto(this.getResultSet().getInt(1));
+                modelProdutos.setProdutoNome(this.getResultSet().getString(2));
+                modelProdutos.setProdutoValor(this.getResultSet().getDouble(3));
+                modelProdutos.setProdutoEstoque(this.getResultSet().getInt(4));
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            this.FecharConexao();
+        }
+        return modelProdutos;
+    }
+
 
     public ArrayList<ModelProduto> retornarListaProdutosDAO() {
         ArrayList<ModelProduto> listaModelProdutos = new ArrayList<>();

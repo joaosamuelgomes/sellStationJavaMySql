@@ -36,7 +36,7 @@ public class ConexaoMySql {
             // Configurando a nossa conexão com um banco de dados//
             String url = "jdbc:mysql://localhost:3306/dbsellstationapp";
             String username = "root";
-            String password = "root";
+            String password = "";
             connection = DriverManager.getConnection(url, username, password);
             //Testa sua conexão//
             if (connection != null) {

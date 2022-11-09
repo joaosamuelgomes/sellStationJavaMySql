@@ -49,6 +49,15 @@ public class ControllerProduto {
     }
     
     /**
+     * controller para retornar produto por id
+     * @param pNomeProduto
+     * @return ModelProdutos
+     */
+    public ModelProduto retornarProdutoControllerPorNome(String pNomeProduto){
+        return this.daoProdutos.retornarProdutoDAO(pNomeProduto);
+    }
+    
+    /**
      * controller para retornar uma lista de produtos
      * @return lista ModelProdutos
      */

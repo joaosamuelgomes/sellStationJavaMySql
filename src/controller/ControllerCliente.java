@@ -29,6 +29,16 @@ public class ControllerCliente {
     public ModelCliente retornarClienteController(int pIdCliente){
         return this.daoCliente.retornarClienteDAO(pIdCliente);
     }
+    
+    /**
+    * recupera Cliente
+    * @param pNomeCliente
+    * @return ModelCliente
+    */
+    public ModelCliente retornarClienteControllerPorNome(String pNomeCliente){
+        return this.daoCliente.retornarClienteDAO(pNomeCliente);
+    }
+    
 
     /**
     * recupera uma lista deCliente

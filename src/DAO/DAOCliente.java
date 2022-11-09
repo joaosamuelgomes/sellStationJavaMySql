@@ -89,6 +89,45 @@ public class DAOCliente extends ConexaoMySql {
         }
         return modelCliente;
     }
+    
+    public ModelCliente retornarClienteDAO(String pNomeCliente){
+        ModelCliente modelCliente = new ModelCliente();
+        try {
+            this.Conectar();
+            this.executarSql(
+                "SELECT "
+                    + "pk_id_cliente,"
+                    + "nome_cliente,"
+                    + "endereco_cliente,"
+                    + "bairro_cliente,"
+                    + "cidade_cliente,"
+                    + "estado_cliente,"
+                    + "cep_cliente,"
+                    + "telefone_cliente"
+                 + " FROM"
+                     + " tbl_cliente"
+                 + " WHERE"
+                     + " nome_cliente = '" + pNomeCliente + "'"
+                + ";"
+            );
+
+            while(this.getResultSet().next()){
+                modelCliente.setIdCliente(this.getResultSet().getInt(1));
+                modelCliente.setNomeCliente(this.getResultSet().getString(2));
+                modelCliente.setEnderecoCliente(this.getResultSet().getString(3));
+                modelCliente.setBairroCliente(this.getResultSet().getString(4));
+                modelCliente.setCidadeCliente(this.getResultSet().getString(5));
+                modelCliente.setEstadoCliente(this.getResultSet().getString(6));
+                modelCliente.setCepCliente(this.getResultSet().getString(7));
+                modelCliente.setTelefoneCliente(this.getResultSet().getString(8));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            this.FecharConexao();
+        }
+        return modelCliente;
+    }
 
     /**
     * recupera uma lista de Cliente

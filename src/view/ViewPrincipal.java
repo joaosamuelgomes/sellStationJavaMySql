@@ -32,10 +32,10 @@ public class ViewPrincipal extends javax.swing.JFrame {
         jmiProduto = new javax.swing.JMenuItem();
         jmiUsuario = new javax.swing.JMenuItem();
         jmVendas = new javax.swing.JMenu();
+        jmiCadastroVendas = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sell Station App - ERP de Gestão Comercial");
-        setPreferredSize(new java.awt.Dimension(0, 0));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/util/images/logo.png"))); // NOI18N
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -99,6 +99,15 @@ public class ViewPrincipal extends javax.swing.JFrame {
         jMenuBar1.add(jmCadastro);
 
         jmVendas.setText("Vendas");
+
+        jmiCadastroVendas.setText("Cadastro");
+        jmiCadastroVendas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiCadastroVendasActionPerformed(evt);
+            }
+        });
+        jmVendas.add(jmiCadastroVendas);
+
         jMenuBar1.add(jmVendas);
 
         setJMenuBar(jMenuBar1);
@@ -135,6 +144,11 @@ public class ViewPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         new ViewUsuario().setVisible(true);
     }//GEN-LAST:event_jmiUsuarioActionPerformed
+
+    private void jmiCadastroVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiCadastroVendasActionPerformed
+        // TODO add your handling code here:
+        new ViewVendas().setVisible(true);
+    }//GEN-LAST:event_jmiCadastroVendasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -177,6 +191,7 @@ public class ViewPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jmArquivos;
     private javax.swing.JMenu jmCadastro;
     private javax.swing.JMenu jmVendas;
+    private javax.swing.JMenuItem jmiCadastroVendas;
     private javax.swing.JMenuItem jmiCliente;
     private javax.swing.JMenuItem jmiProduto;
     private javax.swing.JMenuItem jmiSair;
