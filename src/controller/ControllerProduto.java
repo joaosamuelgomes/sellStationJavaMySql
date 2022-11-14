@@ -54,7 +54,7 @@ public class ControllerProduto {
      * @return ModelProdutos
      */
     public ModelProduto retornarProdutoControllerPorNome(String pNomeProduto){
-        return this.daoProdutos.retornarProdutoDAO(pNomeProduto);
+        return this.daoProdutos.retornarProdutoDAOPorNome(pNomeProduto);
     }
     
     /**

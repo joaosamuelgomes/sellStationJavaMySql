@@ -97,7 +97,7 @@ public class DAOProduto extends ConexaoMySql {
         return modelProdutos;
     }
     
-        public ModelProduto retornarProdutoDAO(String pNomeProduto) {
+        public ModelProduto retornarProdutoDAOPorNome(String pNomeProduto) {
         ModelProduto modelProdutos = new ModelProduto();
         try {
             this.Conectar();
