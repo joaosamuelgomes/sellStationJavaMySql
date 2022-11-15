@@ -1,5 +1,8 @@
 package view;
 
+import java.io.IOException;
+import util.LogGenerator;
+
 /**
  *
  * @author Joao Samuel Gomes
@@ -8,6 +11,9 @@ public class ViewPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form ViewPrincipal
      */
+    
+    LogGenerator logGenerator = new LogGenerator();
+    
     public ViewPrincipal() {
         setExtendedState(ViewPrincipal.MAXIMIZED_BOTH);
         initComponents();
@@ -133,21 +139,42 @@ public class ViewPrincipal extends javax.swing.JFrame {
     private void jmiClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiClienteActionPerformed
         // TODO add your handling code here:
         new ViewCliente().setVisible(true);
+        try{
+            logGenerator.generateLog("View de cliente aberta");
+        } catch (IOException ex) {
+            
+        }
+        
     }//GEN-LAST:event_jmiClienteActionPerformed
 
     private void jmiProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiProdutoActionPerformed
         // TODO add your handling code here:
         new ViewProduto().setVisible(true);
+        try{
+            logGenerator.generateLog("View de produto aberta");
+        } catch (IOException ex) {
+            
+        }
     }//GEN-LAST:event_jmiProdutoActionPerformed
 
     private void jmiUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiUsuarioActionPerformed
         // TODO add your handling code here:
         new ViewUsuario().setVisible(true);
+        try{
+            logGenerator.generateLog("View de usuário aberta");
+        } catch (IOException ex) {
+            
+        }
     }//GEN-LAST:event_jmiUsuarioActionPerformed
 
     private void jmiCadastroVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiCadastroVendasActionPerformed
         // TODO add your handling code here:
         new ViewVendas().setVisible(true);
+        try{
+            logGenerator.generateLog("View de cadastro aberta");
+        } catch (IOException ex) {
+            
+        }
     }//GEN-LAST:event_jmiCadastroVendasActionPerformed
 
     /**

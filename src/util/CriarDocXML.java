@@ -22,7 +22,7 @@ import org.w3c.dom.Element;
  */
 public class CriarDocXML {
     
-    public static void main(String[] args) throws TransformerConfigurationException, TransformerException {
+    public static void main(String[] args){
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -62,6 +62,10 @@ public class CriarDocXML {
             transformer.transform(documentoFonte, documentoFinal);
             
         } catch(ParserConfigurationException ex){
+            Logger.getLogger(CriarDocXML.class.getName()).log(Level.SEVERE, null, ex);
+        } catch(TransformerConfigurationException ex){
+            Logger.getLogger(CriarDocXML.class.getName()).log(Level.SEVERE, null, ex);
+        } catch(TransformerException ex){
             Logger.getLogger(CriarDocXML.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
