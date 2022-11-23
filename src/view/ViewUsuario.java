@@ -8,7 +8,7 @@ import model.ModelUsuario;
 
 /**
  *
- * @author Administrator
+ * @author Joao Samuel Gomes
  */
 public class ViewUsuario extends javax.swing.JFrame {
     

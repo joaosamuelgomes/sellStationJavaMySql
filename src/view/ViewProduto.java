@@ -13,7 +13,7 @@ import util.Formatador;
 
 /**
  *
- * @author joao.samuel
+ * @author Joao Samuel Gomes
  */
 public class ViewProduto extends javax.swing.JFrame {
     

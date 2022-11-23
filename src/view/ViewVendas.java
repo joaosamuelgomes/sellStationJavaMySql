@@ -8,18 +8,21 @@ import controller.ControllerCliente;
 import controller.ControllerProduto;
 import controller.ControllerVendas;
 import controller.ControllerVendasCliente;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.ModelCliente;
 import model.ModelProduto;
 import model.ModelVendasCliente;
+import util.LogGenerator;
 
 /**
  *
- * @author Administrator
+ * @author Joao Samuel Gomes
  */
 public class ViewVendas extends javax.swing.JFrame {
+    LogGenerator logGenerator = new LogGenerator();
     ControllerCliente controllerCliente = new ControllerCliente();
     ModelCliente modelCliente = new ModelCliente();
     ArrayList<ModelCliente> listaModelClientes = new ArrayList<>();
@@ -41,6 +44,7 @@ public class ViewVendas extends javax.swing.JFrame {
         carregarVendas();
         preencheCodigoProdutoInicial();
         preencheCodigoClienteInicial();
+        changeHabilitarCampos(false);
         setLocationRelativeTo(null);
     }
 
@@ -87,7 +91,13 @@ public class ViewVendas extends javax.swing.JFrame {
         jbAlterar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Vendas");
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jtfCodigoCliente.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -368,10 +378,11 @@ public class ViewVendas extends javax.swing.JFrame {
                     .addComponent(jbPesquisar))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbExcluir)
-                    .addComponent(jbAlterar)))
+                    .addComponent(jbAlterar))
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Manutenção", jPanel3);
@@ -418,6 +429,7 @@ public class ViewVendas extends javax.swing.JFrame {
     private void jbNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNovoActionPerformed
         // TODO add your handling code here:
         limparFormularioCadastro();
+        changeHabilitarCampos(true);
     }//GEN-LAST:event_jbNovoActionPerformed
 
     private void jtfCodigoClienteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfCodigoClienteFocusLost
@@ -490,6 +502,11 @@ public class ViewVendas extends javax.swing.JFrame {
         somarValorTotalProdutos();
     }//GEN-LAST:event_jtfDescontoFocusLost
 
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowClosed
+
+    
     /**
      * @param args the command line arguments
      */
@@ -591,6 +608,26 @@ public class ViewVendas extends javax.swing.JFrame {
             listaModelVendasClientes.get(i).getModelVendas().getDataVenda(),
             });
         }
+    }
+
+    /**
+     * Modifica a condição de habilitado dos campos do formulario
+     *
+     * @param condicao
+     */
+    private void changeHabilitarCampos(boolean condicao) {
+        jtfCodigoCliente.setEnabled(condicao);
+        jtfNumeroVenda.setEnabled(condicao);
+        jtfCodigoProduto.setEnabled(condicao);
+        jtfQuantidade.setEnabled(condicao);
+        
+        jcbNomeCliente.setEnabled(condicao);
+        jcbNomeProduto.setEnabled(condicao);
+        
+        jbAdicionar.setEnabled(condicao);
+        
+        
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
