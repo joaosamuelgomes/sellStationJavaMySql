@@ -8,13 +8,18 @@ import controller.ControllerCliente;
 import controller.ControllerProduto;
 import controller.ControllerVendas;
 import controller.ControllerVendasCliente;
+import controller.ControllerVendasProdutos;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.ModelCliente;
 import model.ModelProduto;
+import model.ModelVendas;
 import model.ModelVendasCliente;
+import model.ModelVendasProdutos;
+import util.DataGenerator;
 import util.LogGenerator;
 
 /**
@@ -22,6 +27,7 @@ import util.LogGenerator;
  * @author Joao Samuel Gomes
  */
 public class ViewVendas extends javax.swing.JFrame {
+
     LogGenerator logGenerator = new LogGenerator();
     ControllerCliente controllerCliente = new ControllerCliente();
     ModelCliente modelCliente = new ModelCliente();
@@ -32,6 +38,12 @@ public class ViewVendas extends javax.swing.JFrame {
     ArrayList<ModelVendasCliente> listaModelVendasClientes = new ArrayList<>();
     ControllerVendasCliente controllerVendasCliente = new ControllerVendasCliente();
     ControllerVendas controllerVendas = new ControllerVendas();
+    ModelVendas modelVendas = new ModelVendas();
+    DataGenerator dataGenerator = new DataGenerator();
+    ControllerVendasProdutos controllerVendasProdutos = new ControllerVendasProdutos();
+    ModelVendasProdutos modelVendasProdutos = new ModelVendasProdutos();
+    ArrayList<ModelVendasProdutos> listaModelVendasProdutos = new ArrayList<>();
+
     /**
      * Creates new form ViewVendas
      */
@@ -201,6 +213,11 @@ public class ViewVendas extends javax.swing.JFrame {
         });
 
         jbSalvar.setText("Salvar");
+        jbSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbSalvarActionPerformed(evt);
+            }
+        });
 
         jtfDesconto.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -446,7 +463,7 @@ public class ViewVendas extends javax.swing.JFrame {
 
     private void jcbNomeClientePopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_jcbNomeClientePopupMenuWillBecomeInvisible
         // TODO add your handling code here:
-        if (jcbNomeCliente.isPopupVisible()){
+        if (jcbNomeCliente.isPopupVisible()) {
             modelCliente = controllerCliente.retornarClienteControllerPorNome(jcbNomeCliente.getSelectedItem().toString());
             jtfCodigoCliente.setText(String.valueOf(modelCliente.getIdCliente()));
         }
@@ -454,7 +471,7 @@ public class ViewVendas extends javax.swing.JFrame {
 
     private void jcbNomeProdutoPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_jcbNomeProdutoPopupMenuWillBecomeInvisible
         // TODO add your handling code here:
-        if (jcbNomeProduto.isPopupVisible()){
+        if (jcbNomeProduto.isPopupVisible()) {
             modelProduto = controllerProduto.retornarProdutoControllerPorNome(jcbNomeProduto.getSelectedItem().toString());
             jtfCodigoProduto.setText(String.valueOf(modelProduto.getIdProduto()));
         }
@@ -464,19 +481,19 @@ public class ViewVendas extends javax.swing.JFrame {
         // TODO add your handling code here:
         int linha = jtVendasManutencao.getSelectedRow();
         int codigo = (int) jtVendasManutencao.getValueAt(linha, 0);
-        if (controllerVendas.excluirVendasController(codigo)){
+        if (controllerVendas.excluirVendasController(codigo)) {
             JOptionPane.showMessageDialog(this, "Excluido com sucesso", "OK", JOptionPane.INFORMATION_MESSAGE);
             carregarVendas();
-        }else{
+        } else {
             JOptionPane.showMessageDialog(this, "Erro ao excluir venda", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jbExcluirActionPerformed
 
     private void jbAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAdicionarActionPerformed
         // TODO add your handling code here:
-        if (jtfQuantidade.getText().equals("")){
+        if (jtfQuantidade.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Quantidade não informada", "Erro", JOptionPane.ERROR_MESSAGE);
-        } else{
+        } else {
             controllerProduto.retornarProdutoController(Integer.parseInt(jtfCodigoProduto.getText()));
             DefaultTableModel modelo = (DefaultTableModel) jtVendasCadastro.getModel();
             int cont = 0;
@@ -485,8 +502,8 @@ public class ViewVendas extends javax.swing.JFrame {
             for (int i = 0; i < cont; i++) {
                 modelo.setNumRows(0);
             }
-            
-            modelo.addRow(new Object[] {
+
+            modelo.addRow(new Object[]{
                 modelProduto.getIdProduto(),
                 modelProduto.getProdutoNome(),
                 jtfQuantidade.getText(),
@@ -506,7 +523,49 @@ public class ViewVendas extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosed
 
-    
+    private void jbSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalvarActionPerformed
+
+        int codigoVenda = 0;
+        listaModelVendasProdutos = new ArrayList<>();
+        
+        modelVendas.setIdCliente(Integer.parseInt(jtfCodigoCliente.getText()));
+        var data = (Date) new java.sql.Date(System.currentTimeMillis());
+        try {
+            modelVendas.setDataVenda(dataGenerator.corverterDataParaDateUS(data));
+        } catch (Exception e) {
+        }
+        modelVendas.setValorLiquido(Double.parseDouble(jtfValorTotal.getText()));
+        modelVendas.setValorBruto(Double.parseDouble(jtfValorTotal.getText()) + Double.parseDouble(jtfDesconto.getText()));
+        modelVendas.setValorDesconto(Double.parseDouble(jtfDesconto.getText()));
+        
+        codigoVenda = controllerVendas.salvarVendasController(modelVendas);
+        if (codigoVenda > 0) {
+            JOptionPane.showMessageDialog(this, "Venda salva com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao salvar venda", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        int cont = jtVendasCadastro.getRowCount();
+        
+        for (int i = 0; i < cont; i++) {
+            modelVendasProdutos = new ModelVendasProdutos();
+            modelVendasProdutos.setIdProduto((int) jtVendasCadastro.getValueAt(i, 0));
+            modelVendasProdutos.setIdVenda(codigoVenda);
+            modelVendasProdutos.setValorProduto((double) jtVendasCadastro.getValueAt(i, 3));
+            modelVendasProdutos.setProdutoQuantidade(Integer.parseInt(jtVendasCadastro.getValueAt(i, 2).toString()));
+            listaModelVendasProdutos.add(modelVendasProdutos);
+            
+        }
+        
+        if (controllerVendasProdutos.salvarVendasProdutosController(listaModelVendasProdutos)){
+            JOptionPane.showMessageDialog(this, "Produtos da venda salvos com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            carregarVendas();
+            limparFormularioCadastro();
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao salvar produtos da venda!", "Erro", JOptionPane.ERROR_MESSAGE);
+        };
+    }//GEN-LAST:event_jbSalvarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -541,72 +600,71 @@ public class ViewVendas extends javax.swing.JFrame {
             }
         });
     }
-    
+
     private void listarClientes() {
         listaModelClientes = controllerCliente.retornarListaClienteController();
         jcbNomeCliente.removeAllItems();
-        for (int i = 0; i < listaModelClientes.size(); i++){
+        for (int i = 0; i < listaModelClientes.size(); i++) {
             jcbNomeCliente.addItem(listaModelClientes.get(i).getNomeCliente());
         }
-        
+
     }
-    
+
     private void listarProdutos() {
         listaModelProdutos = controllerProduto.retornarListaProdutosController();
         jcbNomeProduto.removeAllItems();
-        for (int i = 0; i < listaModelProdutos.size(); i++){
+        for (int i = 0; i < listaModelProdutos.size(); i++) {
             jcbNomeProduto.addItem(listaModelProdutos.get(i).getProdutoNome());
         }
-        
+
     }
-    
+
     private void aplicarDescontoProdutos() {
         jtfValorTotal.setText(String.valueOf(Double.parseDouble(jtfValorTotal.getText()) - Double.parseDouble(jtfDesconto.getText())));
     }
-    
+
     private void somarValorTotalProdutos() {
-        
+
         double soma = 0, valor;
         int cont = jtVendasCadastro.getRowCount();
-        
-            for (int i = 0; i < cont; i++) {
-                valor = (double)jtVendasCadastro.getValueAt(i, 4);
-                soma = soma + valor;
-            }
-            
-            jtfValorTotal.setText(String.valueOf(soma));
-            aplicarDescontoProdutos();
+
+        for (int i = 0; i < cont; i++) {
+            valor = (double) jtVendasCadastro.getValueAt(i, 4);
+            soma = soma + valor;
+        }
+
+        jtfValorTotal.setText(String.valueOf(soma));
+        aplicarDescontoProdutos();
     }
-    
+
     private void limparFormularioCadastro() {
         jtfQuantidade.setText("");
         jtfDesconto.setText("0.00");
         jtfValorTotal.setText("0.00");
-        
+
         DefaultTableModel modelo = (DefaultTableModel) jtVendasCadastro.getModel();
         modelo.setNumRows(0);
     }
-    
+
     private void preencheCodigoProdutoInicial() {
         modelProduto = controllerProduto.retornarProdutoControllerPorNome(jcbNomeProduto.getSelectedItem().toString());
         jtfCodigoProduto.setText(String.valueOf(modelProduto.getIdProduto()));
     }
-    
+
     private void preencheCodigoClienteInicial() {
         modelCliente = controllerCliente.retornarClienteControllerPorNome(jcbNomeCliente.getSelectedItem().toString());
         jtfCodigoCliente.setText(String.valueOf(modelCliente.getIdCliente()));
     }
-    
+
     private void carregarVendas() {
         DefaultTableModel modelo = (DefaultTableModel) jtVendasManutencao.getModel();
         listaModelVendasClientes = controllerVendasCliente.retornarListaVendasClienteController();
         int cont = listaModelVendasClientes.size();
-        for (int i = 0; i < cont; i++){
+        for (int i = 0; i < cont; i++) {
             modelo.addRow(new Object[]{
-            listaModelVendasClientes.get(i).getModelVendas().getIdVenda(),
-            listaModelVendasClientes.get(i).getModelCliente().getNomeCliente(),
-            listaModelVendasClientes.get(i).getModelVendas().getDataVenda(),
-            });
+                listaModelVendasClientes.get(i).getModelVendas().getIdVenda(),
+                listaModelVendasClientes.get(i).getModelCliente().getNomeCliente(),
+                listaModelVendasClientes.get(i).getModelVendas().getDataVenda(),});
         }
     }
 
@@ -620,14 +678,12 @@ public class ViewVendas extends javax.swing.JFrame {
         jtfNumeroVenda.setEnabled(condicao);
         jtfCodigoProduto.setEnabled(condicao);
         jtfQuantidade.setEnabled(condicao);
-        
+
         jcbNomeCliente.setEnabled(condicao);
         jcbNomeProduto.setEnabled(condicao);
-        
+
         jbAdicionar.setEnabled(condicao);
-        
-        
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
