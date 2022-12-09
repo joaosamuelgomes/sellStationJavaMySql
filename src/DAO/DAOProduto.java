@@ -70,6 +70,28 @@ public class DAOProduto extends ConexaoMySql {
         }
     }
 
+    public boolean alterarEstoqueProdutoDAO(ArrayList<ModelProduto> pListaModelProdutos) {
+        ModelProduto modelProdutos = new ModelProduto();
+        Connection conexao = Conectar();
+        try {
+            this.Conectar();
+            for (int i = 0; i < pListaModelProdutos.size(); i++) {
+                String sql = "UPDATE tbl_produto SET estoque_produto = ? WHERE pk_id_produto = ?";
+                PreparedStatement ps = conexao.prepareStatement(sql);
+                ps.setInt(1, (int) pListaModelProdutos.get(i).getProdutoEstoque());
+                ps.setInt(2, (int) pListaModelProdutos.get(i).getIdProduto());
+                ps.executeUpdate();
+            }
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            this.FecharConexao();
+        }
+    }
+
     public ModelProduto retornarProdutoDAO(int pIdProduto) {
         ModelProduto modelProdutos = new ModelProduto();
         try {
@@ -96,8 +118,8 @@ public class DAOProduto extends ConexaoMySql {
         }
         return modelProdutos;
     }
-    
-        public ModelProduto retornarProdutoDAOPorNome(String pNomeProduto) {
+
+    public ModelProduto retornarProdutoDAOPorNome(String pNomeProduto) {
         ModelProduto modelProdutos = new ModelProduto();
         try {
             this.Conectar();
@@ -123,7 +145,6 @@ public class DAOProduto extends ConexaoMySql {
         }
         return modelProdutos;
     }
-
 
     public ArrayList<ModelProduto> retornarListaProdutosDAO() {
         ArrayList<ModelProduto> listaModelProdutos = new ArrayList<>();

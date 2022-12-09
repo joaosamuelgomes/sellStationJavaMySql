@@ -39,6 +39,10 @@ public class ControllerProduto {
         return this.daoProdutos.alterarProdutoDAO(pModelProdutos);
     }
     
+    public boolean alterarEstoqueProdutoController(ArrayList<ModelProduto> pListaModelProdutos) {
+        return this.daoProdutos.alterarEstoqueProdutoDAO(pListaModelProdutos);
+    }
+    
     /**
      * controller para retornar produto por id
      * @param pIdProduto
@@ -64,5 +68,7 @@ public class ControllerProduto {
     public ArrayList<ModelProduto> retornarListaProdutosController(){
         return this.daoProdutos.retornarListaProdutosDAO();
     }
+
+    
     
 }
