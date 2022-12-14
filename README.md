@@ -7,7 +7,7 @@
   <p align="center">
   <a href="#-tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-projeto">Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#-layout">Layout</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-screenshots">Screenshots</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-licença">Licença</a>
 </p>
 
@@ -35,14 +35,13 @@ O SellStationApp é um projeto simples de ERP de gestão comercial que implement
 
 ## 📷 Screenshots
 
-<div align="center">
+<div align="center" display="flex">
   
-  <img alt="principal" src=".github/viewPrincipal.png">
-  <img alt="produtos" src=".github/viewProdutos.png">
-  <img alt="clientes" src=".github/viewClientes.png">
-  <img alt="usuarios" src=".github/viewUsuarios.png">
-  <img alt="vendas" src=".github/viewVendas.png">
-
+  <img alt="principal" src=".github/viewPrincipal.PNG" width="80%">
+  <img alt="produtos" src=".github/viewProdutos.PNG" width="80%">
+  <img alt="clientes" src=".github/viewClientes.PNG" width="80%">
+  <img alt="usuarios" src=".github/viewUsuarios.png" width="80%">
+  <img alt="vendas" src=".github/viewVendas.png" width="80%">
 
 </div>
 
