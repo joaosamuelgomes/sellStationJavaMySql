@@ -1,11 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
 
 import controller.ControllerCliente;
 import controller.ControllerProduto;
+import controller.ControllerProdutoVendasProdutos;
 import controller.ControllerVendas;
 import controller.ControllerVendasCliente;
 import controller.ControllerVendasProdutos;
@@ -16,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.ModelCliente;
 import model.ModelProduto;
+import model.ModelProdutoVendasProdutos;
 import model.ModelVendas;
 import model.ModelVendasCliente;
 import model.ModelVendasProdutos;
@@ -43,6 +41,9 @@ public class ViewVendas extends javax.swing.JFrame {
     ControllerVendasProdutos controllerVendasProdutos = new ControllerVendasProdutos();
     ModelVendasProdutos modelVendasProdutos = new ModelVendasProdutos();
     ArrayList<ModelVendasProdutos> listaModelVendasProdutos = new ArrayList<>();
+    ControllerProdutoVendasProdutos controllerProdutoVendasProdutos = new ControllerProdutoVendasProdutos();
+    ModelProdutoVendasProdutos modelProdutosVendasProdutos = new ModelProdutoVendasProdutos();
+    ArrayList<ModelProdutoVendasProdutos> listaModelProdutoVendasProdutos = new ArrayList<>();
 
     /**
      * Creates new form ViewVendas
@@ -213,6 +214,11 @@ public class ViewVendas extends javax.swing.JFrame {
         });
 
         jbSalvar.setText("Salvar");
+        jbSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbSalvarActionPerformed(evt);
+            }
+        });
 
         jtfDesconto.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -475,13 +481,30 @@ public class ViewVendas extends javax.swing.JFrame {
     private void jbExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExcluirActionPerformed
         // TODO add your handling code here:
         int linha = jtVendasManutencao.getSelectedRow();
-        int codigo = (int) jtVendasManutencao.getValueAt(linha, 0);
-        if (controllerVendas.excluirVendasController(codigo)) {
+        int codigoVenda = (int) jtVendasManutencao.getValueAt(linha, 0);
+        listaModelProdutos = new ArrayList<>();
+        listaModelProdutoVendasProdutos = controllerProdutoVendasProdutos.getListaProdutoVendasProdutosController(codigoVenda);
+        for (int i = 0; i < listaModelProdutoVendasProdutos.size(); i++) {
+            modelProduto = new ModelProduto();
+            modelProduto.setIdProduto(listaModelProdutoVendasProdutos.get(i).getModelProduto().getIdProduto());
+            modelProduto.setProdutoEstoque(
+                listaModelProdutoVendasProdutos.get(i).getModelProduto().getProdutoEstoque()
+                +
+                listaModelProdutoVendasProdutos.get(i).getModelVendasProdutos().getProdutoQuantidade());
+            listaModelProdutos.add(modelProduto);
+        }
+        if(controllerProduto.alterarEstoqueProdutoController(listaModelProdutos)){
+            if (controllerVendas.excluirVendasController(codigoVenda)) {
             JOptionPane.showMessageDialog(this, "Excluido com sucesso", "OK", JOptionPane.INFORMATION_MESSAGE);
             carregarVendas();
-        } else {
+            } else {
+                JOptionPane.showMessageDialog(this, "Erro ao excluir venda", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }else {
             JOptionPane.showMessageDialog(this, "Erro ao excluir venda", "Erro", JOptionPane.ERROR_MESSAGE);
-        }
+        };
+        
+        
     }//GEN-LAST:event_jbExcluirActionPerformed
 
     private void jbAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAdicionarActionPerformed
@@ -515,7 +538,7 @@ public class ViewVendas extends javax.swing.JFrame {
     }//GEN-LAST:event_jtfDescontoFocusLost
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_formWindowClosed
 
     private void jbSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalvarActionPerformed
@@ -673,6 +696,7 @@ public class ViewVendas extends javax.swing.JFrame {
         DefaultTableModel modelo = (DefaultTableModel) jtVendasManutencao.getModel();
         listaModelVendasClientes = controllerVendasCliente.retornarListaVendasClienteController();
         int cont = listaModelVendasClientes.size();
+        modelo.setNumRows(0);
         for (int i = 0; i < cont; i++) {
             modelo.addRow(new Object[]{
                 listaModelVendasClientes.get(i).getModelVendas().getIdVenda(),

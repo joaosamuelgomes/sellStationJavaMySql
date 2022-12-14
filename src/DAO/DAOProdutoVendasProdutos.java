@@ -12,17 +12,16 @@ import model.ModelVendasProdutos;
  */
 public class DAOProdutoVendasProdutos extends ConexaoMySql {
     
-    public ArrayList<ModelProdutoVendasProdutos> getListaProdutoVendasProdutosDAO (int pCodigoVenda) {
+    public ArrayList<ModelProdutoVendasProdutos> getListaProdutoVendasProdutosDAO(int pCodigoVenda) {
         
         ArrayList<ModelProdutoVendasProdutos> listaModelProdutoVendasProdutos = new ArrayList<>();
         ModelProdutoVendasProdutos modelProdutoVendasProdutos = new ModelProdutoVendasProdutos();
         ModelProduto modelProduto = new ModelProduto();
         ModelVendasProdutos modelVendasProdutos = new ModelVendasProdutos();
         
-        try{
-            
+        try{      
             this.Conectar();
-            return this.executarSql( "SELECT tbl_produto.pk_id_produto, "
+            this.executarSql( "SELECT tbl_produto.pk_id_produto, "
                     + "tbl_produto.estoque_produto, "
                     + "tbl_produto.nome_produto, "
                     + "tbl_produto.valor_produto, "

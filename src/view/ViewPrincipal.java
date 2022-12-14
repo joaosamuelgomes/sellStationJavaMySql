@@ -1,6 +1,7 @@
 package view;
 
 import java.io.IOException;
+import javax.swing.JFrame;
 import util.LogGenerator;
 
 /**
@@ -134,6 +135,13 @@ public class ViewPrincipal extends javax.swing.JFrame {
 
     private void jmiSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSairActionPerformed
         // TODO add your handling code here:
+        try{
+            logGenerator.generateLog("Aplicação encerrada");
+            System.exit(0);
+        } catch (IOException ex) {
+            
+        }
+      
     }//GEN-LAST:event_jmiSairActionPerformed
 
     private void jmiClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiClienteActionPerformed
