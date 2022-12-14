@@ -521,8 +521,15 @@ public class ViewVendas extends javax.swing.JFrame {
     private void jbSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalvarActionPerformed
 
         int codigoVenda = 0, quantidade = 0;
+        double desconto = 0;
         listaModelVendasProdutos = new ArrayList<>();
         
+        if(jtfDesconto.getText().equals("")){
+            desconto = 0.00;
+        }else{
+            desconto = Double.parseDouble(jtfDesconto.getText());
+        }
+              
         modelVendas.setIdCliente(Integer.parseInt(jtfCodigoCliente.getText()));
         var data = (Date) new java.sql.Date(System.currentTimeMillis());
         try {
@@ -530,9 +537,9 @@ public class ViewVendas extends javax.swing.JFrame {
         } catch (Exception e) {
         }
         modelVendas.setValorLiquido(Double.parseDouble(jtfValorTotal.getText()));
-        modelVendas.setValorBruto(Double.parseDouble(jtfValorTotal.getText()) + Double.parseDouble(jtfDesconto.getText()));
-        modelVendas.setValorDesconto(Double.parseDouble(jtfDesconto.getText()));
-        
+        modelVendas.setValorBruto(Double.parseDouble(jtfValorTotal.getText()) + desconto);
+        modelVendas.setValorDesconto(desconto);
+
         codigoVenda = controllerVendas.salvarVendasController(modelVendas);
         if (codigoVenda > 0) {
             JOptionPane.showMessageDialog(this, "Venda salva com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
@@ -622,7 +629,11 @@ public class ViewVendas extends javax.swing.JFrame {
     }
 
     private void aplicarDescontoProdutos() {
-        jtfValorTotal.setText(String.valueOf(Double.parseDouble(jtfValorTotal.getText()) - Double.parseDouble(jtfDesconto.getText())));
+        try{
+            jtfValorTotal.setText(String.valueOf(
+                    Double.parseDouble(jtfValorTotal.getText()) - Double.parseDouble(jtfDesconto.getText())));
+        } catch (NumberFormatException e){
+        }
     }
 
     private void somarValorTotalProdutos() {

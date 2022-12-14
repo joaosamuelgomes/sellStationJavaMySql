@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS dbsellstationappteste;
-CREATE DATABASE dbsellstationappteste;
-USE dbsellstationappteste;
+DROP DATABASE IF EXISTS dbsellstationapp;
+CREATE DATABASE dbsellstationapp;
+USE dbsellstationapp;
 
 SET SQL_MODE = `NO_AUTO_VALUE_ON_ZERO`;
 START TRANSACTION;
